@@ -199,63 +199,78 @@ frontend:
 
   - task: "Административная панель - Login"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/pages/admin/AdminLogin.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Создана страница входа в админ-панель по адресу /admin. Логин по умолчанию: admin/admin123"
+      - working: false
+        agent: "testing"
+        comment: "КРИТИЧЕСКАЯ ПРОБЛЕМА: Админ-панель недоступна из-за неправильной конфигурации URL. Frontend настроен на http://api.rogoyanov.local, который недоступен в тестовой среде. Backend работает на localhost:8001, но frontend не может к нему подключиться. Все API endpoints протестированы напрямую - работают идеально."
 
   - task: "Административная панель - Dashboard"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/pages/admin/AdminDashboard.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Создан главный экран админ-панели с навигацией по разделам. ОБНОВЛЕНО: добавлены ссылки на все новые разделы (услуги, карусель, преимущества, проекты, категории, товары, о компании, настройки)"
+      - working: false
+        agent: "testing"
+        comment: "Dashboard недоступен из-за проблем с аутентификацией. Не удается войти в админ-панель из-за неправильной конфигурации backend URL."
 
   - task: "Административная панель - Управление новостями"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminNews.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Реализован CRUD для новостей и акций"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/news работает корректно при прямом тестировании."
 
   - task: "Административная панель - Просмотр заявок"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminSubmissions.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Реализован просмотр и управление статусами для callbacks, orders, messages"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API endpoints для callbacks, orders, messages работают корректно при прямом тестировании."
 
   - task: "Защита маршрутов админ-панели"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/components/ProtectedRoute.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Создан компонент ProtectedRoute для защиты админ-страниц с проверкой JWT токена"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. JWT аутентификация работает корректно при прямом тестировании backend API."
   
   - task: "Логотип компании"
     implemented: true
@@ -263,107 +278,134 @@ frontend:
     file: "frontend/src/components/Logo.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Создан SVG логотип с молнией (электромонтаж). Используется в Header и Footer"
+      - working: true
+        agent: "testing"
+        comment: "✅ Логотип отображается корректно на всех публичных страницах. SVG с символом молнии работает идеально."
   
   - task: "Административная панель - Управление услугами"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminServices.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "CRUD для управления услугами. Доступно по /admin/services"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/services работает корректно при прямом тестировании."
   
   - task: "Административная панель - Управление каруселью"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminCarousel.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "CRUD для управления слайдами главной страницы. Доступно по /admin/carousel"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/carousel работает корректно при прямом тестировании."
   
   - task: "Административная панель - Управление преимуществами"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminAdvantages.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "CRUD для управления преимуществами на главной. Доступно по /admin/advantages"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/advantages работает корректно при прямом тестировании."
   
   - task: "Административная панель - Управление проектами"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminProjects.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "CRUD для управления портфолио проектов. Доступно по /admin/projects"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/projects работает корректно при прямом тестировании."
   
   - task: "Административная панель - Управление категориями"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminCategories.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "CRUD для управления категориями каталога. Доступно по /admin/categories"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/categories работает корректно при прямом тестировании."
   
   - task: "Административная панель - Управление товарами"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminProducts.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "CRUD для управления товарами каталога с характеристиками. Доступно по /admin/products"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/products работает корректно при прямом тестировании."
   
   - task: "Административная панель - Управление страницей О компании"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminAbout.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Управление контентом страницы О компании (контент, миссия, видение, ценности). Доступно по /admin/about"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/about работает корректно при прямом тестировании."
   
   - task: "Административная панель - Настройки сайта"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/pages/admin/AdminSettings.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Управление настройками сайта (название, телефон, email, адрес, часы работы, admin email). Доступно по /admin/settings"
+      - working: "NA"
+        agent: "testing"
+        comment: "Не удалось протестировать из-за недоступности админ-панели. Backend API /api/admin/settings работает корректно при прямом тестировании."
   
   - task: "Страница услуг с формой заказа"
     implemented: true

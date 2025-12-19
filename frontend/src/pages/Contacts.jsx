@@ -7,6 +7,8 @@ import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Checkbox } from '../components/ui/checkbox';
 import { toast } from 'sonner';
+import MathCaptcha from '../components/MathCaptcha';
+import { formsAPI } from '../utils/api';
 import { companyInfo } from '../mockData';
 
 const Contacts = () => {
@@ -17,9 +19,13 @@ const Contacts = () => {
     message: '',
     consent: false
   });
+  const [captcha, setCaptcha] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setCaptchaError('');
     
     if (!formData.name || !formData.phone || !formData.email || !formData.message) {
       toast.error('Пожалуйста, заполните все обязательные поля');
@@ -31,17 +37,23 @@ const Contacts = () => {
       return;
     }
 
-    // Mock: save to localStorage
-    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-    messages.push({
-      ...formData,
-      date: new Date().toISOString(),
-      type: 'contact'
-    });
-    localStorage.setItem('messages', JSON.stringify(messages));
+    if (!captcha) {
+      setCaptchaError('Пожалуйста, решите пример');
+      return;
+    }
 
-    toast.success('Спасибо за сообщение! Мы свяжемся с вами в ближайшее время.');
-    setFormData({ name: '', phone: '', email: '', message: '', consent: false });
+    setLoading(true);
+    try {
+      await formsAPI.submitContact(formData);
+      toast.success('Спасибо за сообщение! Мы свяжемся с вами в ближайшее время.');
+      setFormData({ name: '', phone: '', email: '', message: '', consent: false });
+      setCaptcha('');
+    } catch (error) {
+      console.error('Error submitting contact:', error);
+      toast.error('Произошла ошибка. Попробуйте позже.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

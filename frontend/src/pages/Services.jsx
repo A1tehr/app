@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Home, Building2, Store, Factory, Settings, FileText, Lightbulb, Grid3x3, Shield, Smartphone } from 'lucide-react';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { services } from '../mockData';
 import OrderForm from '../components/OrderForm';
+import api from '../utils/api';
 
 const Services = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const data = await api.get('/services');
+      setServices(data);
+    } catch (error) {
+      console.error('Error loading services:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const iconMap = {
     Home,
     Building2,
@@ -19,6 +37,10 @@ const Services = () => {
     Shield,
     Smartphone
   };
+
+  if (loading) {
+    return <div className="min-h-screen bg-gray-50 py-8 flex items-center justify-center">Загрузка...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

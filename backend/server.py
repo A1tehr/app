@@ -29,6 +29,9 @@ api_router = APIRouter(prefix="/api")
 from admin_routes import router as admin_router
 
 
+# Import email utilities
+from email_utils import send_callback_notification, send_order_notification, send_contact_notification
+
 # Define Models
 class StatusCheck(BaseModel):
     model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
@@ -39,6 +42,25 @@ class StatusCheck(BaseModel):
 
 class StatusCheckCreate(BaseModel):
     client_name: str
+
+# Public form models
+class CallbackSubmit(BaseModel):
+    name: str
+    phone: str
+
+class OrderSubmit(BaseModel):
+    name: str
+    email: str
+    phone: str
+    comment: str = ""
+    product: str = None
+    service: str = None
+
+class ContactSubmit(BaseModel):
+    name: str
+    phone: str
+    email: str
+    message: str
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")

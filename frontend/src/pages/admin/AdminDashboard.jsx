@@ -34,14 +34,34 @@ const AdminDashboard = () => {
   };
 
   const menuItems = [
-    { title: 'Новости и акции', icon: Newspaper, link: '/admin/news', color: 'blue' },
-    { title: 'Услуги', icon: Briefcase, link: '/admin/services', color: 'green' },
-    { title: 'Каталог продукции', icon: Package, link: '/admin/catalog', color: 'purple' },
-    { title: 'Проекты', icon: FolderOpen, link: '/admin/projects', color: 'orange' },
-    { title: 'Заявки на звонок', icon: Phone, link: '/admin/callbacks', color: 'red' },
-    { title: 'Заказы', icon: Mail, link: '/admin/orders', color: 'indigo' },
-    { title: 'Сообщения', icon: MessageSquare, link: '/admin/messages', color: 'pink' }
+    // Контент
+    { title: 'Новости и акции', icon: Newspaper, link: '/admin/news', color: 'blue', category: 'Контент' },
+    { title: 'Услуги', icon: Briefcase, link: '/admin/services', color: 'green', category: 'Контент' },
+    { title: 'Проекты (Портфолио)', icon: FolderOpen, link: '/admin/projects', color: 'orange', category: 'Контент' },
+    { title: 'Карусель главной', icon: Image, link: '/admin/carousel', color: 'purple', category: 'Контент' },
+    { title: 'Преимущества', icon: Award, link: '/admin/advantages', color: 'yellow', category: 'Контент' },
+    { title: 'Страница "О компании"', icon: FileText, link: '/admin/about', color: 'cyan', category: 'Контент' },
+    
+    // Каталог
+    { title: 'Категории каталога', icon: Package, link: '/admin/categories', color: 'indigo', category: 'Каталог' },
+    { title: 'Товары каталога', icon: ShoppingCart, link: '/admin/products', color: 'violet', category: 'Каталог' },
+    
+    // Заявки
+    { title: 'Заявки на звонок', icon: Phone, link: '/admin/callbacks', color: 'red', category: 'Заявки' },
+    { title: 'Заказы', icon: Mail, link: '/admin/orders', color: 'rose', category: 'Заявки' },
+    { title: 'Сообщения', icon: MessageSquare, link: '/admin/messages', color: 'pink', category: 'Заявки' },
+    
+    // Настройки
+    { title: 'Настройки сайта', icon: Settings, link: '/admin/settings', color: 'gray', category: 'Настройки' }
   ];
+
+  const groupedMenuItems = menuItems.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = [];
+    }
+    acc[item.category].push(item);
+    return acc;
+  }, {});
 
   return (
     <div className="min-h-screen bg-gray-50">

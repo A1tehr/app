@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { companyInfo } from '../mockData';
+import Logo from './Logo';
 
 const Footer = () => {
   const menuItems = [

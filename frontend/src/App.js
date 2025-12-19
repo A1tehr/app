@@ -16,6 +16,14 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminNews from './pages/admin/AdminNews';
 import AdminSubmissions from './pages/admin/AdminSubmissions';
+import AdminServices from './pages/admin/AdminServices';
+import AdminCarousel from './pages/admin/AdminCarousel';
+import AdminAdvantages from './pages/admin/AdminAdvantages';
+import AdminProjects from './pages/admin/AdminProjects';
+import AdminCategories from './pages/admin/AdminCategories';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminAbout from './pages/admin/AdminAbout';
+import AdminSettings from './pages/admin/AdminSettings';
 import './App.css';
 
 function App() {

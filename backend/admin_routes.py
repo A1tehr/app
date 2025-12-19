@@ -299,3 +299,143 @@ async def update_message_status(message_id: str, status: str, db: AsyncIOMotorDa
     """Update message status"""
     await db.messages.update_one({"id": message_id}, {"$set": {"status": status}})
     return {"message": "Status updated"}
+
+
+
+# ==================== CAROUSEL SLIDES ====================
+@router.get("/carousel", response_model=List[CarouselSlide])
+async def get_all_carousel_slides(db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Get all carousel slides"""
+    slides = await db.carousel.find().sort("order", 1).to_list(1000)
+    return [CarouselSlide(**item) for item in slides]
+
+
+@router.post("/carousel", response_model=CarouselSlide)
+async def create_carousel_slide(slide: CarouselSlideCreate, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Create carousel slide"""
+    slide_obj = CarouselSlide(**slide.dict())
+    await db.carousel.insert_one(slide_obj.dict())
+    return slide_obj
+
+
+@router.put("/carousel/{slide_id}", response_model=CarouselSlide)
+async def update_carousel_slide(slide_id: str, slide: CarouselSlideCreate, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Update carousel slide"""
+    slide_obj = CarouselSlide(id=slide_id, **slide.dict())
+    slide_obj.updated_at = datetime.utcnow()
+    await db.carousel.update_one({"id": slide_id}, {"$set": slide_obj.dict()})
+    return slide_obj
+
+
+@router.delete("/carousel/{slide_id}")
+async def delete_carousel_slide(slide_id: str, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Delete carousel slide"""
+    result = await db.carousel.delete_one({"id": slide_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Carousel slide not found")
+    return {"message": "Carousel slide deleted successfully"}
+
+
+# ==================== ADVANTAGES ====================
+@router.get("/advantages", response_model=List[Advantage])
+async def get_all_advantages(db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Get all advantages"""
+    advantages = await db.advantages.find().sort("order", 1).to_list(1000)
+    return [Advantage(**item) for item in advantages]
+
+
+@router.post("/advantages", response_model=Advantage)
+async def create_advantage(advantage: AdvantageCreate, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Create advantage"""
+    advantage_obj = Advantage(**advantage.dict())
+    await db.advantages.insert_one(advantage_obj.dict())
+    return advantage_obj
+
+
+@router.put("/advantages/{advantage_id}", response_model=Advantage)
+async def update_advantage(advantage_id: str, advantage: AdvantageCreate, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Update advantage"""
+    advantage_obj = Advantage(id=advantage_id, **advantage.dict())
+    advantage_obj.updated_at = datetime.utcnow()
+    await db.advantages.update_one({"id": advantage_id}, {"$set": advantage_obj.dict()})
+    return advantage_obj
+
+
+@router.delete("/advantages/{advantage_id}")
+async def delete_advantage(advantage_id: str, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Delete advantage"""
+    result = await db.advantages.delete_one({"id": advantage_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Advantage not found")
+    return {"message": "Advantage deleted successfully"}
+
+
+# ==================== ABOUT CONTENT ====================
+@router.get("/about")
+async def get_about_content(db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Get about page content"""
+    about = await db.about.find_one({})
+    if not about:
+        # Return default content
+        return AboutContent(
+            content="",
+            mission="",
+            vision="",
+            values=[]
+        ).dict()
+    return AboutContent(**about)
+
+
+@router.put("/about")
+async def update_about_content(content: AboutContentCreate, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Update about page content"""
+    about = await db.about.find_one({})
+    
+    if about:
+        # Update existing
+        content_obj = AboutContent(id=about["id"], **content.dict())
+        content_obj.updated_at = datetime.utcnow()
+        await db.about.update_one({"id": about["id"]}, {"$set": content_obj.dict()})
+    else:
+        # Create new
+        content_obj = AboutContent(**content.dict())
+        await db.about.insert_one(content_obj.dict())
+    
+    return content_obj
+
+
+# ==================== SITE SETTINGS ====================
+@router.get("/settings")
+async def get_site_settings(db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Get site settings"""
+    settings = await db.settings.find_one({})
+    if not settings:
+        # Return default settings
+        return SiteSettings(
+            company_name="ИП Рогоянов А.А.",
+            phone="8 (916) 271-33-09",
+            email="rogoyanov.alexy66@mail.ru",
+            address="г. Воронеж",
+            working_hours="Пн-Пт: 9:00 - 18:00, Сб: 10:00 - 15:00",
+            admin_email="rogoyanov.alexy66@mail.ru",
+            description="Профессиональные электромонтажные работы для физических и юридических лиц."
+        ).dict()
+    return SiteSettings(**settings)
+
+
+@router.put("/settings")
+async def update_site_settings(settings: SiteSettingsCreate, db: AsyncIOMotorDatabase = Depends(get_db), _: str = Depends(verify_token)):
+    """Update site settings"""
+    existing_settings = await db.settings.find_one({})
+    
+    if existing_settings:
+        # Update existing
+        settings_obj = SiteSettings(id=existing_settings["id"], **settings.dict())
+        settings_obj.updated_at = datetime.utcnow()
+        await db.settings.update_one({"id": existing_settings["id"]}, {"$set": settings_obj.dict()})
+    else:
+        # Create new
+        settings_obj = SiteSettings(**settings.dict())
+        await db.settings.insert_one(settings_obj.dict())
+    
+    return settings_obj

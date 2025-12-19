@@ -106,6 +106,12 @@ const OrderForm = ({ productName, serviceName, onClose }) => {
         />
       </div>
 
+      <MathCaptcha 
+        value={captcha}
+        onChange={setCaptcha}
+        error={captchaError}
+      />
+
       <div className="flex items-start gap-2">
         <Checkbox
           id="consent"
@@ -117,8 +123,8 @@ const OrderForm = ({ productName, serviceName, onClose }) => {
         </Label>
       </div>
 
-      <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700">
-        Отправить заявку
+      <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700" disabled={loading}>
+        {loading ? 'Отправка...' : 'Отправить заявку'}
       </Button>
     </form>
   );

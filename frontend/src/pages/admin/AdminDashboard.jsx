@@ -84,25 +84,30 @@ const AdminDashboard = () => {
           <p className="text-gray-600">ИП Рогоянов А.А. - Электромонтажные работы</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link key={item.link} to={item.link}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-orange-500">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 bg-${item.color}-100 rounded-lg flex items-center justify-center`}>
-                        <Icon className={`text-${item.color}-600`} size={24} />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
+        {Object.entries(groupedMenuItems).map(([category, items]) => (
+          <div key={category} className="mb-8">
+            <h3 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">{category}</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.link} to={item.link}>
+                    <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-orange-500 h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 bg-${item.color}-100 rounded-lg flex items-center justify-center flex-shrink-0`}>
+                            <Icon className={`text-${item.color}-600`} size={20} />
+                          </div>
+                          <h3 className="text-sm font-semibold text-gray-800">{item.title}</h3>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </main>
     </div>
   );

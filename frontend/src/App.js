@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
 import ProductDetail from './pages/ProductDetail';
@@ -11,30 +12,107 @@ import { NewsList, NewsDetail } from './pages/News';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Contacts from './pages/Contacts';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminNews from './pages/admin/AdminNews';
+import AdminSubmissions from './pages/admin/AdminSubmissions';
 import './App.css';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/catalog/:categoryId" element={<Catalog />} />
-            <Route path="/catalog/product/:productId" element={<ProductDetail />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/news" element={<NewsList />} />
-            <Route path="/news/:newsId" element={<NewsDetail />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contacts" element={<Contacts />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster position="top-right" />
-      </div>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><Home /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/catalog" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><Catalog /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/catalog/:categoryId" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><Catalog /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/catalog/product/:productId" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><ProductDetail /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/services" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><Services /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/news" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><NewsList /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/news/:newsId" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><NewsDetail /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/about" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><About /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/projects" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><Projects /></main>
+            <Footer />
+          </div>
+        } />
+        <Route path="/contacts" element={
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow"><Contacts /></main>
+            <Footer />
+          </div>
+        } />
+
+        {/* Admin routes */}
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute><AdminDashboard /></ProtectedRoute>
+        } />
+        <Route path="/admin/news" element={
+          <ProtectedRoute><AdminNews /></ProtectedRoute>
+        } />
+        <Route path="/admin/callbacks" element={
+          <ProtectedRoute><AdminSubmissions /></ProtectedRoute>
+        } />
+        <Route path="/admin/orders" element={
+          <ProtectedRoute><AdminSubmissions /></ProtectedRoute>
+        } />
+        <Route path="/admin/messages" element={
+          <ProtectedRoute><AdminSubmissions /></ProtectedRoute>
+        } />
+      </Routes>
+      <Toaster position="top-right" />
     </BrowserRouter>
   );
 }

@@ -130,3 +130,63 @@ class AdminUser(BaseModel):
 class AdminLogin(BaseModel):
     username: str
     password: str
+
+
+# Carousel Slides
+class CarouselSlideBase(BaseModel):
+    title: str
+    description: str
+    image: str
+    link: str
+    order: int = 0
+
+class CarouselSlideCreate(CarouselSlideBase):
+    pass
+
+class CarouselSlide(CarouselSlideBase, TimestampModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+
+# Advantages
+class AdvantageBase(BaseModel):
+    icon: str
+    title: str
+    description: str
+    order: int = 0
+
+class AdvantageCreate(AdvantageBase):
+    pass
+
+class Advantage(AdvantageBase, TimestampModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+
+# About Page Content
+class AboutContentBase(BaseModel):
+    content: str
+    mission: Optional[str] = None
+    vision: Optional[str] = None
+    values: Optional[List[str]] = []
+
+class AboutContentCreate(AboutContentBase):
+    pass
+
+class AboutContent(AboutContentBase, TimestampModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+
+# Site Settings
+class SiteSettingsBase(BaseModel):
+    company_name: str
+    phone: str
+    email: str
+    address: str
+    working_hours: str
+    admin_email: str
+    description: Optional[str] = None
+
+class SiteSettingsCreate(SiteSettingsBase):
+    pass
+
+class SiteSettings(SiteSettingsBase, TimestampModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))

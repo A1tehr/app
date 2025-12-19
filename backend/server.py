@@ -91,6 +91,76 @@ async def get_status_checks():
     
     return status_checks
 
+
+# Public form endpoints
+@api_router.post("/callback")
+async def submit_callback(data: CallbackSubmit):
+    """Submit callback request"""
+    callback_data = {
+        "id": str(uuid.uuid4()),
+        "name": data.name,
+        "phone": data.phone,
+        "type": "callback",
+        "status": "new",
+        "date": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.callbacks.insert_one(callback_data)
+    
+    # Send email notification
+    send_callback_notification(data.name, data.phone)
+    
+    return {"message": "Callback request submitted successfully"}
+
+
+@api_router.post("/order")
+async def submit_order(data: OrderSubmit):
+    """Submit order request"""
+    order_data = {
+        "id": str(uuid.uuid4()),
+        "name": data.name,
+        "email": data.email,
+        "phone": data.phone,
+        "comment": data.comment,
+        "product": data.product,
+        "service": data.service,
+        "type": "order",
+        "status": "new",
+        "date": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.orders.insert_one(order_data)
+    
+    # Send email notification
+    send_order_notification(
+        data.name, data.email, data.phone, 
+        data.comment, data.product, data.service
+    )
+    
+    return {"message": "Order submitted successfully"}
+
+
+@api_router.post("/contact")
+async def submit_contact(data: ContactSubmit):
+    """Submit contact message"""
+    message_data = {
+        "id": str(uuid.uuid4()),
+        "name": data.name,
+        "phone": data.phone,
+        "email": data.email,
+        "message": data.message,
+        "type": "contact",
+        "status": "new",
+        "date": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.messages.insert_one(message_data)
+    
+    # Send email notification
+    send_contact_notification(data.name, data.phone, data.email, data.message)
+    
+    return {"message": "Contact message submitted successfully"}
+
 # Include the router in the main app
 app.include_router(api_router)
 app.include_router(admin_router)

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel API Test</h1>
+    <p>This test verifies that the admin panel backend APIs are working correctly.</p>
+    
+    <button onclick="testLogin()">Test Login</button>
+    <button onclick="testAllEndpoints()">Test All Admin Endpoints</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div id="results"></div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:8001';
+        let authToken = null;
+
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/admin/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'admin123'
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    authToken = data.access_token;
+                    addResult('✅ Login successful! Token received.', 'success');
+                    
+                    // Test token verification
+                    const verifyResponse = await fetch(`${BACKEND_URL}/api/admin/verify`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (verifyResponse.ok) {
+                        const verifyData = await verifyResponse.json();
+                        addResult(`✅ Token verification successful! User: ${verifyData.username}`, 'success');
+                    } else {
+                        addResult('❌ Token verification failed', 'error');
+                    }
+                } else {
+                    addResult('❌ Login failed: ' + response.statusText, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Login error: ' + error.message, 'error');
+            }
+        }
+
+        async function testAllEndpoints() {
+            if (!authToken) {
+                addResult('⚠️ Please login first to get authentication token', 'error');
+                return;
+            }
+
+            const endpoints = [
+                { name: 'News', url: '/api/admin/news' },
+                { name: 'Services', url: '/api/admin/services' },
+                { name: 'Carousel', url: '/api/admin/carousel' },
+                { name: 'Advantages', url: '/api/admin/advantages' },
+                { name: 'Projects', url: '/api/admin/projects' },
+                { name: 'Categories', url: '/api/admin/categories' },
+                { name: 'Products', url: '/api/admin/products' },
+                { name: 'About', url: '/api/admin/about' },
+                { name: 'Settings', url: '/api/admin/settings' },
+                { name: 'Callbacks', url: '/api/admin/callbacks' },
+                { name: 'Orders', url: '/api/admin/orders' },
+                { name: 'Messages', url: '/api/admin/messages' }
+            ];
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`${BACKEND_URL}${endpoint.url}`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        addResult(`✅ ${endpoint.name} endpoint working (${Array.isArray(data) ? data.length + ' items' : 'data received'})`, 'success');
+                    } else {
+                        addResult(`❌ ${endpoint.name} endpoint failed: ${response.status} ${response.statusText}`, 'error');
+                    }
+                } catch (error) {
+                    addResult(`❌ ${endpoint.name} endpoint error: ${error.message}`, 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -59,3 +59,16 @@ export const submissionsAPI = {
   getMessages: () => axios.get(`${API}/admin/messages`, { headers: getAuthHeaders() }),
   updateMessageStatus: (id, status) => axios.put(`${API}/admin/messages/${id}/status?status=${status}`, {}, { headers: getAuthHeaders() })
 };
+
+// Public forms API
+export const formsAPI = {
+  submitCallback: (data) => axios.post(`${API}/callback`, data),
+  submitOrder: (data) => axios.post(`${API}/order`, data),
+  submitContact: (data) => axios.post(`${API}/contact`, data)
+};
+
+// Auth API
+export const authAPI = {
+  login: (credentials) => axios.post(`${API}/admin/login`, credentials),
+  verify: () => axios.get(`${API}/admin/verify`, { headers: getAuthHeaders() })
+};

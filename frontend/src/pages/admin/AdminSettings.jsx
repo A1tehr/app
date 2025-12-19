@@ -4,7 +4,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
-import api from '../../utils/api';
+import { settingsAPI } from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminSettings = () => {
@@ -25,7 +25,7 @@ const AdminSettings = () => {
 
   const fetchSettings = async () => {
     try {
-      const data = await api.get('/admin/settings');
+      const { data } = await settingsAPI.get();
       setFormData(data);
     } catch (error) {
       toast.error('Ошибка загрузки настроек');
@@ -37,7 +37,7 @@ const AdminSettings = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.put('/admin/settings', formData);
+      await settingsAPI.update(formData);
       toast.success('Настройки обновлены');
       
       // Показываем сообщение о необходимости обновления страницы

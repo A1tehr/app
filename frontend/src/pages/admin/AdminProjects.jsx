@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { toast } from 'sonner';
-import api from '../../utils/api';
+import {projectsAPI} from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminProjects = () => {
@@ -24,7 +24,7 @@ const AdminProjects = () => {
 
   const fetchProjects = async () => {
     try {
-      const data = await api.get('/admin/projects');
+      const { data } = await projectsAPI.getAll();
       setProjects(data);
     } catch (error) {
       toast.error('Ошибка загрузки проектов');
@@ -44,10 +44,10 @@ const AdminProjects = () => {
     try {
       const dataToSend = { ...formData, images: validImages };
       if (editingProject) {
-        await api.put(`/admin/projects/${editingProject.id}`, dataToSend);
+        await projectsAPI.update(editingProject.id, dataToSend);
         toast.success('Проект обновлен');
       } else {
-        await api.post('/admin/projects', dataToSend);
+        await projectsAPI.create(dataToSend);
         toast.success('Проект добавлен');
       }
       setIsDialogOpen(false);
@@ -61,7 +61,7 @@ const AdminProjects = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Удалить этот проект?')) return;
     try {
-      await api.delete(`/admin/projects/${id}`);
+      await projectsAPI.delete(id);
       toast.success('Проект удален');
       fetchProjects();
     } catch (error) {

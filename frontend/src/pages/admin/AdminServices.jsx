@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
-import api from '../../utils/api';
+import { servicesAPI } from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminServices = () => {
@@ -31,7 +31,8 @@ const AdminServices = () => {
 
   const fetchServices = async () => {
     try {
-      const data = await api.get('/admin/services');
+      const { data } = await servicesAPI.getAll();
+      console.log(data)
       setServices(data);
     } catch (error) {
       toast.error('Ошибка загрузки услуг');
@@ -44,10 +45,10 @@ const AdminServices = () => {
     e.preventDefault();
     try {
       if (editingService) {
-        await api.put(`/admin/services/${editingService.id}`, formData);
+        await servicesAPI.update(editingService.id, formData);
         toast.success('Услуга обновлена');
       } else {
-        await api.post('/admin/services', formData);
+        await servicesAPI.create(formData);
         toast.success('Услуга добавлена');
       }
       setIsDialogOpen(false);
@@ -61,7 +62,7 @@ const AdminServices = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Удалить эту услугу?')) return;
     try {
-      await api.delete(`/admin/services/${id}`);
+      await servicesAPI.delete(id);
       toast.success('Услуга удалена');
       fetchServices();
     } catch (error) {

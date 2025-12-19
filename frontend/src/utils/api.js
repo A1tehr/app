@@ -100,3 +100,20 @@ export const authAPI = {
   login: (credentials) => axios.post(`${API}/admin/login`, credentials),
   verify: () => axios.get(`${API}/admin/verify`, { headers: getAuthHeaders() })
 };
+
+const api = {
+  newsAPI,
+  servicesAPI,
+  categoriesAPI,
+  productsAPI,
+  projectsAPI,
+  submissionsAPI,
+  formsAPI,
+  carouselAPI,
+  advantagesAPI,
+  aboutAPI,
+  settingsAPI,
+  authAPI
+};
+
+export default api;

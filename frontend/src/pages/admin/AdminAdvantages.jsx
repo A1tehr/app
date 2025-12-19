@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
-import api from '../../utils/api';
+import {advantagesAPI} from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminAdvantages = () => {
@@ -32,7 +32,7 @@ const AdminAdvantages = () => {
 
   const fetchAdvantages = async () => {
     try {
-      const data = await api.get('/admin/advantages');
+      const { data } = await advantagesAPI.getAll();
       setAdvantages(data);
     } catch (error) {
       toast.error('Ошибка загрузки преимуществ');
@@ -45,10 +45,10 @@ const AdminAdvantages = () => {
     e.preventDefault();
     try {
       if (editingAdvantage) {
-        await api.put(`/admin/advantages/${editingAdvantage.id}`, formData);
+        await advantagesAPI.update(editingAdvantage.id, formData);
         toast.success('Преимущество обновлено');
       } else {
-        await api.post('/admin/advantages', formData);
+        await advantagesAPI.create(formData);
         toast.success('Преимущество добавлено');
       }
       setIsDialogOpen(false);
@@ -62,7 +62,7 @@ const AdminAdvantages = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Удалить это преимущество?')) return;
     try {
-      await api.delete(`/admin/advantages/${id}`);
+      await advantagesAPI.delete(id);
       toast.success('Преимущество удалено');
       fetchAdvantages();
     } catch (error) {

@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
-import api from '../../utils/api';
+import {categoriesAPI} from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminCategories = () => {
@@ -27,7 +27,7 @@ const AdminCategories = () => {
 
   const fetchCategories = async () => {
     try {
-      const data = await api.get('/admin/categories');
+      const { data } = await categoriesAPI.getAll();
       setCategories(data);
     } catch (error) {
       toast.error('Ошибка загрузки категорий');
@@ -40,10 +40,10 @@ const AdminCategories = () => {
     e.preventDefault();
     try {
       if (editingCategory) {
-        await api.put(`/admin/categories/${editingCategory.id}`, formData);
+        await categoriesAPI.update(editingCategory.id, formData);
         toast.success('Категория обновлена');
       } else {
-        await api.post('/admin/categories', formData);
+        await categoriesAPI.create(formData);
         toast.success('Категория добавлена');
       }
       setIsDialogOpen(false);
@@ -57,7 +57,7 @@ const AdminCategories = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Удалить эту категорию?')) return;
     try {
-      await api.delete(`/admin/categories/${id}`);
+      await categoriesAPI.delete(id);
       toast.success('Категория удалена');
       fetchCategories();
     } catch (error) {

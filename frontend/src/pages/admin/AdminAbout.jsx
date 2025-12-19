@@ -3,7 +3,7 @@ import { Button } from '../../components/ui/button';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
-import api from '../../utils/api';
+import { aboutAPI } from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminAbout = () => {
@@ -22,7 +22,7 @@ const AdminAbout = () => {
 
   const fetchAboutContent = async () => {
     try {
-      const data = await api.get('/admin/about');
+      const { data } = await aboutAPI.get();
       setFormData(data);
     } catch (error) {
       toast.error('Ошибка загрузки контента');

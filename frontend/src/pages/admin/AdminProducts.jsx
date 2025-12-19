@@ -7,7 +7,7 @@ import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
-import api from '../../utils/api';
+import {productsAPI, categoriesAPI} from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminProducts = () => {
@@ -32,7 +32,7 @@ const AdminProducts = () => {
 
   const fetchCategories = async () => {
     try {
-      const data = await api.get('/admin/categories');
+      const { data } = await categoriesAPI.getAll();
       setCategories(data);
     } catch (error) {
       toast.error('Ошибка загрузки категорий');
@@ -41,7 +41,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const data = await api.get('/admin/products');
+      const { data } = await productsAPI.getAll();
       setProducts(data);
     } catch (error) {
       toast.error('Ошибка загрузки товаров');
@@ -57,10 +57,10 @@ const AdminProducts = () => {
 
     try {
       if (editingProduct) {
-        await api.put(`/admin/products/${editingProduct.id}`, dataToSend);
+        await productsAPI.update(editingProduct.id, dataToSend);
         toast.success('Товар обновлен');
       } else {
-        await api.post('/admin/products', dataToSend);
+        await productsAPI.create(dataToSend);
         toast.success('Товар добавлен');
       }
       setIsDialogOpen(false);
@@ -74,7 +74,7 @@ const AdminProducts = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Удалить этот товар?')) return;
     try {
-      await api.delete(`/admin/products/${id}`);
+      await productsAPI.delete(id);
       toast.success('Товар удален');
       fetchProducts();
     } catch (error) {

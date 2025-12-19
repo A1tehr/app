@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
-import api from '../../utils/api';
+import {carouselAPI} from '../../utils/api';
 import AdminLayout from './AdminLayout';
 
 const AdminCarousel = () => {
@@ -28,7 +28,7 @@ const AdminCarousel = () => {
 
   const fetchSlides = async () => {
     try {
-      const data = await api.get('/admin/carousel');
+      const { data } = await carouselAPI.getAll();
       setSlides(data);
     } catch (error) {
       toast.error('Ошибка загрузки слайдов');
@@ -41,10 +41,10 @@ const AdminCarousel = () => {
     e.preventDefault();
     try {
       if (editingSlide) {
-        await api.put(`/admin/carousel/${editingSlide.id}`, formData);
+        await carouselAPI.update(editingSlide.id, formData);
         toast.success('Слайд обновлен');
       } else {
-        await api.post('/admin/carousel', formData);
+        await carouselAPI.create(formData);
         toast.success('Слайд добавлен');
       }
       setIsDialogOpen(false);
@@ -58,7 +58,7 @@ const AdminCarousel = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Удалить этот слайд?')) return;
     try {
-      await api.delete(`/admin/carousel/${id}`);
+      await carouselAPI.delete(id);
       toast.success('Слайд удален');
       fetchSlides();
     } catch (error) {

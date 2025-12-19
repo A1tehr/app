@@ -110,6 +110,30 @@ function App() {
         <Route path="/admin/news" element={
           <ProtectedRoute><AdminNews /></ProtectedRoute>
         } />
+        <Route path="/admin/services" element={
+          <ProtectedRoute><AdminServices /></ProtectedRoute>
+        } />
+        <Route path="/admin/carousel" element={
+          <ProtectedRoute><AdminCarousel /></ProtectedRoute>
+        } />
+        <Route path="/admin/advantages" element={
+          <ProtectedRoute><AdminAdvantages /></ProtectedRoute>
+        } />
+        <Route path="/admin/projects" element={
+          <ProtectedRoute><AdminProjects /></ProtectedRoute>
+        } />
+        <Route path="/admin/categories" element={
+          <ProtectedRoute><AdminCategories /></ProtectedRoute>
+        } />
+        <Route path="/admin/products" element={
+          <ProtectedRoute><AdminProducts /></ProtectedRoute>
+        } />
+        <Route path="/admin/about" element={
+          <ProtectedRoute><AdminAbout /></ProtectedRoute>
+        } />
+        <Route path="/admin/settings" element={
+          <ProtectedRoute><AdminSettings /></ProtectedRoute>
+        } />
         <Route path="/admin/callbacks" element={
           <ProtectedRoute><AdminSubmissions /></ProtectedRoute>
         } />

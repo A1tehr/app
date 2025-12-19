@@ -147,6 +147,18 @@ backend:
       - working: true
         agent: "main"
         comment: "API для администрирования контента уже существовало в проекте"
+  
+  - task: "API для управления каруселью, преимуществами, О компании и настройками"
+    implemented: true
+    working: true
+    file: "backend/admin_routes.py, backend/server.py, backend/models.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Добавлены модели и API endpoints для carousel, advantages, about, settings. Добавлены публичные endpoints для получения контента"
 
 frontend:
   - task: "Исправление контактных данных"

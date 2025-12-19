@@ -4,16 +4,22 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { toast } from 'sonner';
+import MathCaptcha from './MathCaptcha';
+import { formsAPI } from '../utils/api';
 
-const CallbackForm = () => {
+const CallbackForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     consent: false
   });
+  const [captcha, setCaptcha] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setCaptchaError('');
     
     if (!formData.name || !formData.phone) {
       toast.error('Пожалуйста, заполните все обязательные поля');
@@ -25,17 +31,24 @@ const CallbackForm = () => {
       return;
     }
 
-    // Mock: save to localStorage
-    const callbacks = JSON.parse(localStorage.getItem('callbacks') || '[]');
-    callbacks.push({
-      ...formData,
-      date: new Date().toISOString(),
-      type: 'callback'
-    });
-    localStorage.setItem('callbacks', JSON.stringify(callbacks));
+    if (!captcha) {
+      setCaptchaError('Пожалуйста, решите пример');
+      return;
+    }
 
-    toast.success('Спасибо! Мы свяжемся с вами в ближайшее время.');
-    setFormData({ name: '', phone: '', consent: false });
+    setLoading(true);
+    try {
+      await formsAPI.submitCallback(formData);
+      toast.success('Спасибо! Мы свяжемся с вами в ближайшее время.');
+      setFormData({ name: '', phone: '', consent: false });
+      setCaptcha('');
+      if (onClose) onClose();
+    } catch (error) {
+      console.error('Error submitting callback:', error);
+      toast.error('Произошла ошибка. Попробуйте позже.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -50,16 +50,8 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-orange-600 to-orange-500 rounded-lg flex items-center justify-center">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <div>
-              <div className="text-xl font-bold text-gray-800">{companyInfo.name}</div>
-              <div className="text-xs text-gray-600">Электромонтажные работы</div>
-            </div>
+          <Link to="/">
+            <Logo size="default" />
           </Link>
 
           {/* Desktop menu */}

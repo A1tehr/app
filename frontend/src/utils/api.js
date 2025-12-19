@@ -67,6 +67,34 @@ export const formsAPI = {
   submitContact: (data) => axios.post(`${API}/contact`, data)
 };
 
+// Carousel API
+export const carouselAPI = {
+  getAll: () => axios.get(`${API}/admin/carousel`, { headers: getAuthHeaders() }),
+  create: (data) => axios.post(`${API}/admin/carousel`, data, { headers: getAuthHeaders() }),
+  update: (id, data) => axios.put(`${API}/admin/carousel/${id}`, data, { headers: getAuthHeaders() }),
+  delete: (id) => axios.delete(`${API}/admin/carousel/${id}`, { headers: getAuthHeaders() })
+};
+
+// Advantages API
+export const advantagesAPI = {
+  getAll: () => axios.get(`${API}/admin/advantages`, { headers: getAuthHeaders() }),
+  create: (data) => axios.post(`${API}/admin/advantages`, data, { headers: getAuthHeaders() }),
+  update: (id, data) => axios.put(`${API}/admin/advantages/${id}`, data, { headers: getAuthHeaders() }),
+  delete: (id) => axios.delete(`${API}/admin/advantages/${id}`, { headers: getAuthHeaders() })
+};
+
+// About API
+export const aboutAPI = {
+  get: () => axios.get(`${API}/admin/about`, { headers: getAuthHeaders() }),
+  update: (data) => axios.put(`${API}/admin/about`, data, { headers: getAuthHeaders() })
+};
+
+// Settings API
+export const settingsAPI = {
+  get: () => axios.get(`${API}/admin/settings`, { headers: getAuthHeaders() }),
+  update: (data) => axios.put(`${API}/admin/settings`, data, { headers: getAuthHeaders() })
+};
+
 // Auth API
 export const authAPI = {
   login: (credentials) => axios.post(`${API}/admin/login`, credentials),

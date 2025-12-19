@@ -4,7 +4,11 @@ from models import (
     News, NewsCreate, Service, ServiceCreate, Category, CategoryCreate,
     Product, ProductCreate, Project, ProjectCreate,
     CallbackRequest, OrderRequest, ContactMessage,
-    AdminLogin
+    AdminLogin,
+    CarouselSlide, CarouselSlideCreate,
+    Advantage, AdvantageCreate,
+    AboutContent, AboutContentCreate,
+    SiteSettings, SiteSettingsCreate
 )
 from motor.motor_asyncio import AsyncIOMotorDatabase
 import os

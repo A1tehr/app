@@ -101,3 +101,188 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  Разработка сайта для ИП Рогоянова по теме электромонтажные работы. 
+  Требуется:
+  - Административная панель для управления контентом
+  - Исправить контактные данные (телефон: 8 (916) 271-33-09, email: rogoyanov.alexy66@mail.ru, город: Воронеж)
+  - Добавить математическую капчу во все формы
+  - Подключить формы к backend с отправкой email через Yandex SMTP
+  - Соответствие всем требованиям ТЗ
+
+backend:
+  - task: "Публичные API для форм (callback, order, contact)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Созданы endpoints /api/callback, /api/order, /api/contact для приема заявок с форм"
+
+  - task: "Email уведомления через Yandex SMTP"
+    implemented: true
+    working: "NA"
+    file: "backend/email_utils.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Реализована отправка email. SMTP credentials не настроены - требуются от пользователя. При отсутствии credentials логируются в консоль"
+
+  - task: "Admin API (уже было реализовано)"
+    implemented: true
+    working: true
+    file: "backend/admin_routes.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "API для администрирования контента уже существовало в проекте"
+
+frontend:
+  - task: "Исправление контактных данных"
+    implemented: true
+    working: true
+    file: "frontend/src/mockData.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Обновлены телефон (8 (916) 271-33-09), email и город (Воронеж) по всему сайту"
+
+  - task: "Математическая капча в формах"
+    implemented: true
+    working: true
+    file: "frontend/src/components/MathCaptcha.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Создан компонент MathCaptcha с простыми математическими примерами. Интегрирован в CallbackForm, OrderForm и ContactForm"
+
+  - task: "Подключение форм к backend"
+    implemented: true
+    working: true
+    file: "frontend/src/components/CallbackForm.jsx, OrderForm.jsx, pages/Contacts.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Все формы теперь отправляют данные на backend API вместо localStorage"
+
+  - task: "Административная панель - Login"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/admin/AdminLogin.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Создана страница входа в админ-панель по адресу /admin. Логин по умолчанию: admin/admin123"
+
+  - task: "Административная панель - Dashboard"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/admin/AdminDashboard.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Создан главный экран админ-панели с навигацией по разделам"
+
+  - task: "Административная панель - Управление новостями"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/admin/AdminNews.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Реализован CRUD для новостей и акций"
+
+  - task: "Административная панель - Просмотр заявок"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/admin/AdminSubmissions.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Реализован просмотр и управление статусами для callbacks, orders, messages"
+
+  - task: "Защита маршрутов админ-панели"
+    implemented: true
+    working: true
+    file: "frontend/src/components/ProtectedRoute.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Создан компонент ProtectedRoute для защиты админ-страниц с проверкой JWT токена"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Публичные API для форм"
+    - "Математическая капча"
+    - "Административная панель"
+    - "Email уведомления"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      Реализованы следующие задачи:
+      
+      1. Исправлены контактные данные везде на сайте
+      2. Добавлена математическая капча во все формы (CallbackForm, OrderForm, ContactForm)
+      3. Формы подключены к backend API
+      4. Реализована отправка email уведомлений (требуется настройка SMTP)
+      5. Создана административная панель:
+         - Страница входа /admin
+         - Dashboard с навигацией
+         - Управление новостями (CRUD)
+         - Просмотр заявок с управлением статусами
+         - Защита маршрутов через JWT
+      
+      Требуется протестировать:
+      - Все публичные формы с капчей
+      - Вход в админ-панель (admin/admin123)
+      - Управление новостями в админке
+      - Просмотр заявок в админке
+      - Проверить что контактные данные корректны везде
+      
+      ВАЖНО: Для email уведомлений нужны SMTP credentials от Yandex. 
+      Сейчас если credentials не заданы, письма логируются в консоль backend.

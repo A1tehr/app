@@ -167,11 +167,14 @@ frontend:
     file: "frontend/src/mockData.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Обновлены телефон (8 (916) 271-33-09), email и город (Воронеж) по всему сайту"
+      - working: true
+        agent: "testing"
+        comment: "✅ Контактные данные корректно отображаются на всех страницах: телефон 8 (916) 271-33-09, email rogoyanov.alexy66@mail.ru, город Воронеж."
 
   - task: "Математическая капча в формах"
     implemented: true
@@ -179,23 +182,29 @@ frontend:
     file: "frontend/src/components/MathCaptcha.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Создан компонент MathCaptcha с простыми математическими примерами. Интегрирован в CallbackForm, OrderForm и ContactForm"
+      - working: true
+        agent: "testing"
+        comment: "✅ Математическая капча работает корректно. Видна на странице контактов (9 - 7 = ?). Компонент интегрирован в формы."
 
   - task: "Подключение форм к backend"
     implemented: true
-    working: true
+    working: "NA"
     file: "frontend/src/components/CallbackForm.jsx, OrderForm.jsx, pages/Contacts.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Все формы теперь отправляют данные на backend API вместо localStorage"
+      - working: "NA"
+        agent: "testing"
+        comment: "Формы настроены на отправку в backend API, но не удалось протестировать отправку из-за проблем с URL конфигурацией. Backend API endpoints /api/callback, /api/order, /api/contact работают при прямом тестировании."
 
   - task: "Административная панель - Login"
     implemented: true

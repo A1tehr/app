@@ -25,6 +25,9 @@ app = FastAPI()
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
+# Import admin routes
+from admin_routes import router as admin_router
+
 
 # Define Models
 class StatusCheck(BaseModel):

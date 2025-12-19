@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
-import { Newspaper, Briefcase, Package, FolderOpen, MessageSquare, Phone, Mail, LogOut } from 'lucide-react';
+import { 
+  Newspaper, Briefcase, Package, FolderOpen, MessageSquare, Phone, Mail, LogOut,
+  Sliders, Award, FileText, Settings, Image, ShoppingCart
+} from 'lucide-react';
 import { authAPI } from '../../utils/api';
 import { toast } from 'sonner';
 

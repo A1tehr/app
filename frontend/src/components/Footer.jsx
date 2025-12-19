@@ -21,13 +21,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company info */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-600 to-orange-500 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div className="text-lg font-bold text-white">{companyInfo.name}</div>
+            <div className="mb-4">
+              <Logo size="small" className="text-white [&_span]:text-white [&_.text-gray-600]:text-gray-400" />
             </div>
             <p className="text-sm leading-relaxed">
               {companyInfo.description}

@@ -5,8 +5,10 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { toast } from 'sonner';
+import MathCaptcha from './MathCaptcha';
+import { formsAPI } from '../utils/api';
 
-const OrderForm = ({ productName, serviceName }) => {
+const OrderForm = ({ productName, serviceName, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,9 +16,13 @@ const OrderForm = ({ productName, serviceName }) => {
     comment: '',
     consent: false
   });
+  const [captcha, setCaptcha] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setCaptchaError('');
     
     if (!formData.name || !formData.email || !formData.phone) {
       toast.error('Пожалуйста, заполните все обязательные поля');
@@ -28,19 +34,28 @@ const OrderForm = ({ productName, serviceName }) => {
       return;
     }
 
-    // Mock: save to localStorage
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push({
-      ...formData,
-      product: productName,
-      service: serviceName,
-      date: new Date().toISOString(),
-      type: 'order'
-    });
-    localStorage.setItem('orders', JSON.stringify(orders));
+    if (!captcha) {
+      setCaptchaError('Пожалуйста, решите пример');
+      return;
+    }
 
-    toast.success('Спасибо за заказ! Мы свяжемся с вами в ближайшее время.');
-    setFormData({ name: '', email: '', phone: '', comment: '', consent: false });
+    setLoading(true);
+    try {
+      await formsAPI.submitOrder({
+        ...formData,
+        product: productName,
+        service: serviceName
+      });
+      toast.success('Спасибо за заказ! Мы свяжемся с вами в ближайшее время.');
+      setFormData({ name: '', email: '', phone: '', comment: '', consent: false });
+      setCaptcha('');
+      if (onClose) onClose();
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      toast.error('Произошла ошибка. Попробуйте позже.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { companyInfo } from '../mockData';
 import CallbackForm from './CallbackForm';
+import Logo from './Logo';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

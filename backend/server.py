@@ -161,6 +161,106 @@ async def submit_contact(data: ContactSubmit):
     
     return {"message": "Contact message submitted successfully"}
 
+
+# Public content endpoints
+@api_router.get("/carousel")
+async def get_carousel():
+    """Get carousel slides"""
+    slides = await db.carousel.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+    return slides
+
+
+@api_router.get("/advantages")
+async def get_advantages():
+    """Get advantages"""
+    advantages = await db.advantages.find({}, {"_id": 0}).sort("order", 1).to_list(100)
+    return advantages
+
+
+@api_router.get("/about")
+async def get_about():
+    """Get about page content"""
+    about = await db.about.find_one({}, {"_id": 0})
+    if not about:
+        return {
+            "content": "Мы - команда профессионалов с многолетним опытом в сфере электромонтажных работ.",
+            "mission": "",
+            "vision": "",
+            "values": []
+        }
+    return about
+
+
+@api_router.get("/settings")
+async def get_settings():
+    """Get site settings"""
+    settings = await db.settings.find_one({}, {"_id": 0})
+    if not settings:
+        return {
+            "company_name": "ИП Рогоянов А.А.",
+            "phone": "8 (916) 271-33-09",
+            "email": "rogoyanov.alexy66@mail.ru",
+            "address": "г. Воронеж",
+            "working_hours": "Пн-Пт: 9:00 - 18:00, Сб: 10:00 - 15:00",
+            "admin_email": "rogoyanov.alexy66@mail.ru",
+            "description": "Профессиональные электромонтажные работы для физических и юридических лиц."
+        }
+    return settings
+
+
+@api_router.get("/news")
+async def get_public_news():
+    """Get all published news"""
+    news_list = await db.news.find({}, {"_id": 0}).sort("date", -1).to_list(1000)
+    return news_list
+
+
+@api_router.get("/news/{news_id}")
+async def get_news_by_id(news_id: str):
+    """Get news by ID"""
+    news = await db.news.find_one({"id": news_id}, {"_id": 0})
+    if not news:
+        raise HTTPException(status_code=404, detail="News not found")
+    return news
+
+
+@api_router.get("/services")
+async def get_public_services():
+    """Get all services"""
+    services = await db.services.find({}, {"_id": 0}).to_list(1000)
+    return services
+
+
+@api_router.get("/categories")
+async def get_public_categories():
+    """Get all categories"""
+    categories = await db.categories.find({}, {"_id": 0}).to_list(1000)
+    return categories
+
+
+@api_router.get("/products")
+async def get_public_products(category_id: str = None):
+    """Get all products, optionally filtered by category"""
+    query = {"category_id": category_id} if category_id else {}
+    products = await db.products.find(query, {"_id": 0}).to_list(1000)
+    return products
+
+
+@api_router.get("/products/{product_id}")
+async def get_product_by_id(product_id: str):
+    """Get product by ID"""
+    product = await db.products.find_one({"id": product_id}, {"_id": 0})
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@api_router.get("/projects")
+async def get_public_projects():
+    """Get all projects"""
+    projects = await db.projects.find({}, {"_id": 0}).to_list(1000)
+    return projects
+
 # Include the router in the main app
 app.include_router(api_router)
 app.include_router(admin_router)
